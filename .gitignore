@@ -1,0 +1,22 @@
+.DS_Store
+
+# Local agent/runtime state
+.serena/
+evidence/
+
+# LaTeX build artifacts
+*.aux
+*.fdb_latexmk
+*.fls
+*.log
+*.out
+*.synctex.gz
+*.toc
+missfont.log
+
+# Generated output
+main.pdf
+
+# Original editable Word file is not required for the strict replica build.
+*.doc
+*.docx
