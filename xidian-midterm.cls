@@ -2,7 +2,7 @@
 % 西安电子科技大学硕士学位论文中期考核报告表（学术学位）
 % PDF 底图 + 可填写叠加层。
 \NeedsTeXFormat{LaTeX2e}
-\ProvidesClass{xidian-midterm}[2026/07/06 v4.0 setup keys]
+\ProvidesClass{xidian-midterm}[2026/07/06 v4.1 cover field font]
 
 \LoadClass[a4paper]{article}
 
@@ -95,6 +95,7 @@
 \keys_define:nn { xidian-midterm / style }
   {
     template-file .code:n = { \cs_set:Npn \MidtermTemplateFile {#1} },
+    cover-field-font .code:n = { \cs_set:Npn \MidtermCoverFieldFont {#1} },
     field-font .code:n = { \cs_set:Npn \MidtermFieldFont {#1} },
     body-font .code:n = { \cs_set:Npn \MidtermBodyFont {#1} },
     small-font .code:n = { \cs_set:Npn \MidtermSmallFont {#1} }
@@ -115,6 +116,7 @@
 \ExplSyntaxOff
 
 % ========== 字体 ==========
+\newcommand{\MidtermCoverFieldFont}{\zihao{3}\selectfont}
 \newcommand{\MidtermFieldFont}{\fontsize{12bp}{20bp}\selectfont}
 \newcommand{\MidtermBodyFont}{\fontsize{12bp}{20bp}\selectfont}
 \newcommand{\MidtermSmallFont}{\fontsize{10.5bp}{16bp}\selectfont}
@@ -133,6 +135,10 @@
 
 \newcommand{\MidtermLineField}[4]{%
   \MidtermAtBase{#1}{#2}{\makebox[#3bp][c]{\raisebox{2bp}{\MidtermFieldFont #4}}}%
+}
+
+\newcommand{\MidtermCoverLineField}[4]{%
+  \MidtermAtBase{#1}{#2}{\makebox[#3bp][c]{\raisebox{2bp}{\MidtermCoverFieldFont #4}}}%
 }
 
 \newcommand{\MidtermTextArea}[5]{%
@@ -170,14 +176,14 @@
 % ========== 页面覆盖层 ==========
 \newcommand{\MidtermCoverOverlay}{%
   \begin{tikzpicture}[remember picture,overlay]
-    \MidtermLineField{437}{99}{78}{\XueHao}
-    \MidtermLineField{170}{369}{285}{\LunWenTiMu}
-    \MidtermLineField{262}{491}{145}{\XingMing}
-    \MidtermLineField{262}{526}{145}{\YiJiXueKe}
-    \MidtermLineField{262}{561}{145}{\ErJiXueKe}
-    \MidtermLineField{262}{595}{145}{\ZhiDaoJiaoShi}
-    \MidtermLineField{262}{630}{145}{\XueYuan}
-    \MidtermLineField{262}{664}{145}{\BaoGaoRiQi}
+    \MidtermCoverLineField{437}{99}{78}{\XueHao}
+    \MidtermCoverLineField{170}{369}{285}{\LunWenTiMu}
+    \MidtermCoverLineField{262}{491}{145}{\XingMing}
+    \MidtermCoverLineField{262}{526}{145}{\YiJiXueKe}
+    \MidtermCoverLineField{262}{561}{145}{\ErJiXueKe}
+    \MidtermCoverLineField{262}{595}{145}{\ZhiDaoJiaoShi}
+    \MidtermCoverLineField{262}{630}{145}{\XueYuan}
+    \MidtermCoverLineField{262}{664}{145}{\BaoGaoRiQi}
   \end{tikzpicture}%
 }
 
