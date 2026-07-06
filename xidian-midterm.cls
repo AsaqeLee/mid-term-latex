@@ -2,15 +2,18 @@
 % 西安电子科技大学硕士学位论文中期考核报告表（学术学位）
 % PDF 底图 + 可填写叠加层。
 \NeedsTeXFormat{LaTeX2e}
-\ProvidesClass{xidian-midterm}[2026/07/06 v4.1 cover field font]
+\ProvidesClass{xidian-midterm}[2026/07/06 v4.2 dynamic body pages]
 
 \LoadClass[a4paper]{article}
 
 \RequirePackage{expl3}
 \RequirePackage{xparse}
 \RequirePackage[UTF8]{ctex}
+\RequirePackage{geometry}
 \RequirePackage{pdfpages}
+\RequirePackage{tcolorbox}
 \RequirePackage{tikz}
+\tcbuselibrary{breakable,skins}
 
 \pagestyle{empty}
 
@@ -109,9 +112,9 @@
     style .meta:nn = { xidian-midterm / style } {#1}
   }
 
-\NewDocumentCommand \midtermsetup { m }
+\NewDocumentCommand \midtermsetup { +m }
   { \keys_set:nn { xidian-midterm } {#1} }
-\NewDocumentCommand \MidtermSetup { m }
+\NewDocumentCommand \MidtermSetup { +m }
   { \midtermsetup {#1} }
 \ExplSyntaxOff
 
@@ -120,6 +123,66 @@
 \newcommand{\MidtermFieldFont}{\fontsize{12bp}{20bp}\selectfont}
 \newcommand{\MidtermBodyFont}{\fontsize{12bp}{20bp}\selectfont}
 \newcommand{\MidtermSmallFont}{\fontsize{10.5bp}{16bp}\selectfont}
+
+% ========== 动态正文页 ==========
+\newcommand{\MidtermDynamicGeometry}{%
+  \newgeometry{left=29mm,right=29mm,top=22mm,bottom=24mm}%
+  \pagestyle{empty}%
+}
+
+\newcommand{\MidtermDynamicHeading}[1]{%
+  \noindent{\bfseries #1}\par
+}
+
+\newtcolorbox{MidtermDynamicBox}[1][]{%
+  enhanced,
+  breakable,
+  colback=white,
+  colframe=black,
+  boxrule=0.5pt,
+  arc=0pt,
+  left=6pt,
+  right=6pt,
+  top=6pt,
+  bottom=6pt,
+  fontupper=\MidtermBodyFont,
+  before upper={\setlength{\parindent}{2em}\setlength{\parskip}{0pt}},
+  before skip=0pt,
+  after skip=12pt,
+  #1%
+}
+
+\newcommand{\MidtermDynamicSection}[2]{%
+  \begin{MidtermDynamicBox}
+  #1%
+  \par\medskip
+  #2%
+  \end{MidtermDynamicBox}%
+}
+
+\newcommand{\MidtermDynamicBodyPages}{%
+  \clearpage
+  \MidtermDynamicGeometry
+  \MidtermDynamicSection{%
+    选题来源：\XuanTiLaiYuan
+    \par\medskip
+    \MidtermDynamicHeading{一、学位论文研究目标及研究内容}%
+    （与开题报告中的研究目标和研究内容一致。）%
+  }{\YanJiuMuBiao}%
+  \MidtermDynamicSection{%
+    \MidtermDynamicHeading{二、目前已完成学位论文工作的内容}%
+    （主要包括所完成的理论和实验研究以及所获得的结论。）%
+  }{\YiWanChengGongZuo}%
+  \MidtermDynamicSection{%
+    \MidtermDynamicHeading{三、现阶段完成的工作与开题报告内容不相符的情况说明}%
+  }{\BuXiangFuShuoMing}%
+  \MidtermDynamicSection{%
+    \MidtermDynamicHeading{四、下一步工作计划及需要完成的研究内容和需要解决的关键技术}%
+  }{\XiaYiBuJiHua}%
+  \MidtermDynamicSection{%
+    \MidtermDynamicHeading{五、已发表的与学位论文相关的学术论文、其他研究成果以及拟发表的研究成果}%
+  }{\XueShuChengGuo}%
+}
 
 % ========== 覆盖层工具 ==========
 % 坐标单位使用 PDF bp，原点为页面左上角，x 向右，y 向下。
@@ -231,13 +294,22 @@
   \includepdf[pages=-,fitpaper=true,pagecommand={}]{\MidtermTemplateFile}%
 }
 
-% 输出可填写版本。字段为空时视觉上仍为原始空白模板。
-\newcommand{\printmidterm}{%
+% 输出固定 6 页覆盖版本。保留给需要严格覆盖原 PDF 的场景。
+\newcommand{\printfixedmidterm}{%
   \includepdf[pages=1,fitpaper=true,pagecommand={\thispagestyle{empty}},picturecommand={\MidtermCoverOverlay}]{\MidtermTemplateFile}%
   \includepdf[pages=2,fitpaper=true,pagecommand={\thispagestyle{empty}}]{\MidtermTemplateFile}%
   \includepdf[pages=3,fitpaper=true,pagecommand={\thispagestyle{empty}},picturecommand={\MidtermPageThreeOverlay}]{\MidtermTemplateFile}%
   \includepdf[pages=4,fitpaper=true,pagecommand={\thispagestyle{empty}},picturecommand={\MidtermPageFourOverlay}]{\MidtermTemplateFile}%
   \includepdf[pages=5,fitpaper=true,pagecommand={\thispagestyle{empty}},picturecommand={\MidtermPageFiveOverlay}]{\MidtermTemplateFile}%
+  \includepdf[pages=6,fitpaper=true,pagecommand={\thispagestyle{empty}},picturecommand={\MidtermPageSixOverlay}]{\MidtermTemplateFile}%
+}
+
+% 输出内容驱动的可填写版本。正文使用可分页框，页数随内容增长。
+\newcommand{\printmidterm}{%
+  \includepdf[pages=1,fitpaper=true,pagecommand={\thispagestyle{empty}},picturecommand={\MidtermCoverOverlay}]{\MidtermTemplateFile}%
+  \includepdf[pages=2,fitpaper=true,pagecommand={\thispagestyle{empty}}]{\MidtermTemplateFile}%
+  \MidtermDynamicBodyPages
+  \clearpage
   \includepdf[pages=6,fitpaper=true,pagecommand={\thispagestyle{empty}},picturecommand={\MidtermPageSixOverlay}]{\MidtermTemplateFile}%
 }
 
