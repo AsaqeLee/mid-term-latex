@@ -2,10 +2,12 @@
 % 西安电子科技大学硕士学位论文中期考核报告表（学术学位）
 % PDF 底图 + 可填写叠加层。
 \NeedsTeXFormat{LaTeX2e}
-\ProvidesClass{xidian-midterm}[2026/07/03 v3.0 fillable PDF overlay]
+\ProvidesClass{xidian-midterm}[2026/07/06 v4.0 setup keys]
 
 \LoadClass[a4paper]{article}
 
+\RequirePackage{expl3}
+\RequirePackage{xparse}
 \RequirePackage[UTF8]{ctex}
 \RequirePackage{pdfpages}
 \RequirePackage{tikz}
@@ -50,6 +52,67 @@
 \newcommand{\KaoHeNian}{}
 \newcommand{\KaoHeYue}{}
 \newcommand{\KaoHeRi}{}
+
+% ========== xduts 风格键值接口 ==========
+\ExplSyntaxOn
+\keys_define:nn { xidian-midterm / info }
+  {
+    student-id .code:n = { \cs_set:Npn \XueHao {#1} },
+    name .code:n = { \cs_set:Npn \XingMing {#1} },
+    first-level-discipline .code:n = { \cs_set:Npn \YiJiXueKe {#1} },
+    second-level-discipline .code:n = { \cs_set:Npn \ErJiXueKe {#1} },
+    supervisor .code:n = { \cs_set:Npn \ZhiDaoJiaoShi {#1} },
+    school .code:n = { \cs_set:Npn \XueYuan {#1} },
+    report-date .code:n = { \cs_set:Npn \BaoGaoRiQi {#1} },
+    title .code:n = { \cs_set:Npn \LunWenTiMu {#1} }
+  }
+
+\keys_define:nn { xidian-midterm / content }
+  {
+    source .code:n = { \cs_set:Npn \XuanTiLaiYuan {#1} },
+    research-goal .code:n = { \cs_set:Npn \YanJiuMuBiao {#1} },
+    completed-work .code:n = { \cs_set:Npn \YiWanChengGongZuo {#1} },
+    deviation .code:n = { \cs_set:Npn \BuXiangFuShuoMing {#1} },
+    next-plan .code:n = { \cs_set:Npn \XiaYiBuJiHua {#1} },
+    achievements .code:n = { \cs_set:Npn \XueShuChengGuo {#1} }
+  }
+
+\keys_define:nn { xidian-midterm / review }
+  {
+    supervisor-comment .code:n = { \cs_set:Npn \DaoShiPingJia {#1} },
+    supervisor-sign .code:n = { \cs_set:Npn \DaoShiQianMing {#1} },
+    supervisor-year .code:n = { \cs_set:Npn \DaoShiNian {#1} },
+    supervisor-month .code:n = { \cs_set:Npn \DaoShiYue {#1} },
+    supervisor-day .code:n = { \cs_set:Npn \DaoShiRi {#1} },
+    committee-comment .code:n = { \cs_set:Npn \ZhongQiPingYu {#1} },
+    chair-sign .code:n = { \cs_set:Npn \ZuZhangQianMing {#1} },
+    member-sign .code:n = { \cs_set:Npn \ChengYuanQianMing {#1} },
+    committee-year .code:n = { \cs_set:Npn \KaoHeNian {#1} },
+    committee-month .code:n = { \cs_set:Npn \KaoHeYue {#1} },
+    committee-day .code:n = { \cs_set:Npn \KaoHeRi {#1} }
+  }
+
+\keys_define:nn { xidian-midterm / style }
+  {
+    template-file .code:n = { \cs_set:Npn \MidtermTemplateFile {#1} },
+    field-font .code:n = { \cs_set:Npn \MidtermFieldFont {#1} },
+    body-font .code:n = { \cs_set:Npn \MidtermBodyFont {#1} },
+    small-font .code:n = { \cs_set:Npn \MidtermSmallFont {#1} }
+  }
+
+\keys_define:nn { xidian-midterm }
+  {
+    info .meta:nn = { xidian-midterm / info } {#1},
+    content .meta:nn = { xidian-midterm / content } {#1},
+    review .meta:nn = { xidian-midterm / review } {#1},
+    style .meta:nn = { xidian-midterm / style } {#1}
+  }
+
+\NewDocumentCommand \midtermsetup { m }
+  { \keys_set:nn { xidian-midterm } {#1} }
+\NewDocumentCommand \MidtermSetup { m }
+  { \midtermsetup {#1} }
+\ExplSyntaxOff
 
 % ========== 字体 ==========
 \newcommand{\MidtermFieldFont}{\fontsize{12bp}{20bp}\selectfont}
