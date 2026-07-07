@@ -2,7 +2,7 @@
 % 西安电子科技大学硕士学位论文中期考核报告表（学术学位）
 % PDF 底图 + 可填写叠加层。
 \NeedsTeXFormat{LaTeX2e}
-\ProvidesClass{xidian-midterm}[2026/07/06 v4.2 dynamic body pages]
+\ProvidesClass{xidian-midterm}[2026/07/07 v4.4 fixed-height dynamic body frames]
 
 \LoadClass[a4paper]{article}
 
@@ -137,6 +137,7 @@
 \newtcolorbox{MidtermDynamicBox}[1][]{%
   enhanced,
   breakable,
+  height fixed for=all,
   colback=white,
   colframe=black,
   boxrule=0.5pt,
@@ -153,16 +154,16 @@
 }
 
 \newcommand{\MidtermDynamicSection}[2]{%
-  \begin{MidtermDynamicBox}
   #1%
   \par\medskip
   #2%
-  \end{MidtermDynamicBox}%
+  \par\medskip
 }
 
 \newcommand{\MidtermDynamicBodyPages}{%
   \clearpage
   \MidtermDynamicGeometry
+  \begin{MidtermDynamicBox}
   \MidtermDynamicSection{%
     选题来源：\XuanTiLaiYuan
     \par\medskip
@@ -182,6 +183,7 @@
   \MidtermDynamicSection{%
     \MidtermDynamicHeading{五、已发表的与学位论文相关的学术论文、其他研究成果以及拟发表的研究成果}%
   }{\XueShuChengGuo}%
+  \end{MidtermDynamicBox}%
 }
 
 % ========== 覆盖层工具 ==========
